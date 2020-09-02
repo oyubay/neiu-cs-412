@@ -18,7 +18,7 @@ Package reciever information
 - Phone number
 - Address
 
-Package informatoin
+Package information
 - what's inside (detailed item names, price, number of that item)
 - price
 - weight
