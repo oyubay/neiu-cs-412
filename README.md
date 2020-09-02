@@ -12,7 +12,7 @@ Users' information will be stored on the server.
 - Phone number
 - Address
 
-Package reciever information
+Package receiver information
 - First name
 - Last name
 - Phone number
