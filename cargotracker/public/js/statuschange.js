@@ -1,7 +1,9 @@
 let cargostatus = require('./cargostatus')
+let moment = require('moment')
 exports.changeStatus= function (){
     let tempStatus=cargostatus.getStatus()
-    console.log("You changed your status to " + tempStatus)
-    console.log("hello beauti")
+    let now = moment().format()
+    console.log("You changed your status to " + tempStatus + " at " + now)
+
     return true
 }
