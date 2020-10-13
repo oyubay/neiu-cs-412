@@ -4,13 +4,6 @@ let moment = require('moment')
 
 let EventEmitter = require('events').EventEmitter
 
-// exports.events=function events(){
-//     for (let i=0; i<=10; i++){
-//         console.log('pre-emitter')
-//         emitter.emit('counter ' + i)
-//         console.log('post-emitter')
-//     }
-// }
 exports.changeStatus= function (){
 
     let emitter = new EventEmitter();
