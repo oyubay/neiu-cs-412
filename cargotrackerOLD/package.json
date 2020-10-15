@@ -1,0 +1,9 @@
+{
+  "name": "cargotracker",
+  "version": "1.0.0",
+  "dependencies": {
+    "axios": "^0.20.0",
+    "browserify": "^17.0.0",
+    "mime-types": "^2.1.27"
+  }
+}
