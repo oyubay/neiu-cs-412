@@ -1,0 +1,15 @@
+
+<img class = "main" src="/images/add_box.png"/>
+<form class = "edit" method="post" action="/cargos/save">
+    <input type = "hidden" name = "saveMethod"
+           value="{{#if isCreate}}create{{else}}update{{/if}}"/>
+    <p>
+        Key: {{ cargoKey}}
+        <input type="hidden" name="cargoKey" value="{{cargoKey}}"/>
+    </p>
+    <p>
+        Title: <input type = "text" name="title"/><br/>
+    </p>
+    <textarea rows=5 cols=40 name="body"></textarea><br/>
+    <input class="submit" type="submit" value="Submit"/>
+</form>

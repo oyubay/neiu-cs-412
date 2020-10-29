@@ -5,8 +5,13 @@ const cookieParser = require('cookie-parser')
 const http = require('http')
 const hbs = require('express-handlebars')
 
+const InMemoryCargosStore = require('./models/cargo-memory').InMemoryCargoStore
+let cargosStore = new InMemoryCargosStore()
+exports.cargosStore = cargosStore
+
 const appsupport = require('./appsupport')
 const indexRouter = require('./routes/index')
+const cargosRouter = require('./routes/cargos')
 
 const app = express()
 exports.app = app
@@ -30,6 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 //Router function lists
 app.use('/', indexRouter)
+app.use('/cargos', cargosRouter)
 
 //Error handlers
 app.use(appsupport.basicErrorHandler)

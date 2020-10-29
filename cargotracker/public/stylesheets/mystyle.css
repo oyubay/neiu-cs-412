@@ -1,0 +1,16 @@
+body {
+    max-width: max-content;
+    margin: auto;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+h1, .navbar{
+    text-align: center;
+}
+IMG.main{
+    display: block;
+    margin-left:auto;
+    margin-right: auto;
+}
+.navbar{
+    color: cadetblue;
+}

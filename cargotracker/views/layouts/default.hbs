@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>{{title}}</title>
-
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
+    {{#each styles}}
+        <link rel = 'stylesheet' href={{this}}/>
+    {{/each}}
+</head>
   <body>
+  {{> header}}
     {{{body}}}
   </body>
 </html>
