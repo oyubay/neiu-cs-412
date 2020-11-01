@@ -1,6 +1,17 @@
-<h3>Title:  {{ cargoTitle }}</h3>
-<p>Body: {{ cargoBody }}</p>
-<p>Key: {{cargoKey}} </p>
+<h3>Order number:  {{ cargoKey }}</h3>
+<p>Tracking number: {{ cargoTrack }}</p>
+<p>Cargo items: {{ cargoItems }}</p>
+<p>Sender name: {{cargoFromName}} </p>
+<p>Sender address: {{cargoFromAddress}} </p>
+<p>Sender phone number: {{cargoFromNumber}} </p>
+
+<p>Receiver name: {{cargoToName}} </p>
+<p>Receiver address: {{cargoToAddress}} </p>
+<p>Receiver phone number: {{cargoToNumber}} </p>
+<p>Cargo size: {{ cargoSize }}</p>
+<p>Cargo price: {{ cargoPrice }}</p>
+<p>Cargo type: {{ cargoType }}</p>
+<p>Cargo date: {{ cargoDate}}</p>
 <hr/>
 <p>
     <span><a href="/cargos/destroy?key={{cargoKey}}"> Delete Cargo</a></span>

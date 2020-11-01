@@ -4,7 +4,8 @@ let projectName = "Cargo Tracker"
 
 router.get('/', async function(req, res, next) {
     let options = {
-      title: projectName,
+        title: "Cargo Tracker",
+      caption: "Cargo Tracker",
       layout: 'default',
       styles: ['/stylesheets/mystyle.css &ldquo;','/stylesheets/style.css &ldquo;'],
     }

@@ -7,8 +7,41 @@
         <input type="hidden" name="cargoKey" value="{{cargoKey}}"/>
     </p>
     <p>
-        Title: <input type = "text" name="title" value = "{{cargoTitle}}"/><br/>
+        Tracking number: <input type = "number" name="tracking_id" value="{{cargoTrack}}"/><br/>
     </p>
-    <textarea rows=5 cols=40 name="body">{{cargoBody}}</textarea><br/>
+    <p>
+        Sender name: <input type = "text" name="from_name" value="{{cargoFromName}}"/><br/>
+    </p>
+    <p>
+        Receiver name: <input type = "text" name="to_name" value="{{cargoToName}}"/><br/>
+    </p>
+    <p>
+        Sender address: <input type = "text" name="from_address" value="{{cargoFromAddress}}"/><br/>
+    </p>
+    <p>
+        Receiver address: <input type = "text" name="to_address" value="{{cargoToAddress}}"/><br/>
+    </p>
+    <p>
+        Sender phone number: <input type = "number" name="from_number" value="{{cargoFromNumber}}"/><br/>
+    </p>
+    <p>
+        Receiver phone number: <input type = "number" name="to_number" value="{{cargoToNumber}}"/><br/>
+    </p>
+    <p>
+        Cargo type: {{cargoType}}
+        <input type = "radio" name="cargo_type" id="air-transport" value="air-transport"/>Air transport<br/>
+        <input type = "radio" name="cargo_type" id="auto-transport" value="auto-transport"/>Auto transport<br/>
+    </p>
+    <p>
+        Cargo size: <input type = "number" name="size" value="{{cargoSize}}"/><br/>
+    </p>
+    <p>
+        Cargo price: <input type = "number" name="price" value="{{cargoPrice}}"/><br/>
+    </p>
+    <p>
+        Cargo date: {{ cargoDate}}
+        <input type="hidden" name="cargoDate" value="{{cargoDate}}"/>
+    </p>
+    <textarea rows=5 cols=40 name="items">{{cargoBody}}</textarea><br/>
     <input type="submit" value="Submit"/>
 </form>

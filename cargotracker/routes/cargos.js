@@ -6,7 +6,8 @@ router.get('/add', async (req, res, next) => {
     try {
         res.render('add_cargo', {
             isCreate: true,
-            title: 'Add a cargo',
+            title:"Add",
+            caption: 'Add a cargo',
             cargoKey: await cargosStore.count(),
             styles:['/stylesheets/mystyle.css &ldquo;','/stylesheets/cargo.css &ldquo;']
         })
@@ -14,6 +15,35 @@ router.get('/add', async (req, res, next) => {
         next(err)
     }
 })
+
+router.post('/save', async(req, res, next)=>{
+    try {
+        let cargo
+        let date = new Date()
+        if(req.body.saveMethod === 'create')
+            cargo = await cargosStore.create(req.body.cargoKey, req.body.tracking_id, req.body.from_name, req.body.to_name, req.body.from_address,
+                req.body.to_address, req.body.from_number, req.body.to_number, req.body.cargo_type, req.body.size, req.body.price,
+                date, req.body.items)
+        else
+            cargo = await cargosStore.update(req.body.cargoKey,req.body.tracking_id, req.body.from_name, req.body.to_name, req.body.from_address,
+                req.body.to_address, req.body.from_number, req.body.to_number, req.body.cargo_type, req.body.size, req.body.price,
+                date, req.body.items)
+        res.redirect('/cargos/view?key='+req.body.cargoKey)
+    }catch (err){
+        next(err)
+    }
+})
+
+router.get('/delete', async(req, res, next)=>{
+    try{
+        await cargosStore.destroy(req.query.key)
+        res.redirect('viewall')
+    }
+    catch (err){
+        next(err)
+    }
+})
+
 router.get('/viewall', async function(req, res, next) {
 
     try {
@@ -23,7 +53,8 @@ router.get('/viewall', async function(req, res, next) {
         })
         let allCargos = await Promise.all(keyPromises)
         let options = {
-            title: 'View all cargo',
+            caption: 'View all cargo',
+            title:"View all",
             styles: ['/stylesheets/mystyle.css &ldquo;','/stylesheets/style.css &ldquo;', '/stylesheets/cargo.css &ldquo;'],
             cargoList: extractNotesToLiteral(allCargos)
         }
@@ -36,33 +67,31 @@ function extractNotesToLiteral(allCargos){
     return allCargos.map(cargos=> {
         return {
             key: cargos.key,
-            title: cargos.title
+            tracking_id:cargos.tracking_id
         }
     })
 }
-
-router.post('/save', async(req, res, next)=>{
-    try {
-        let cargo;
-        if(req.body.saveMethod === 'create')
-            cargo = await cargosStore.create(req.body.cargoKey, req.body.title, req.body.body)
-        else
-            cargo = await cargosStore.update(req.body.cargoKey, req.body.title, req.body.body)
-        res.redirect('/cargos/view?key='+req.body.cargoKey)
-    }catch (err){
-        next(err)
-    }
-})
 
 router.get('/view', async(req, res, next)=>{
     try{
         let cargo = await cargosStore.read(req.query.key)
         res.render('view_cargo', {
-            title:"View cargo",
-            cargoTitle: cargo.title,
-            cargoKey: cargo.key,
-            cargoBody: cargo.body,
+            caption:"View cargo",
+            title:"View",
             styles: ['/stylesheets/mystyle.css &ldquo;', '/stylesheets/cargo.css &ldquo;'],
+            cargoKey: cargo.key,
+            cargoTrack: cargo.tracking_id,
+            cargoItems: cargo.items,
+            cargoToName: cargo.to_name,
+            cargoFromName: cargo.from_name,
+            cargoToAddress: cargo.to_address,
+            cargoFromAddress: cargo.from_address,
+            cargoToNumber: cargo.to_number,
+            cargoFromNumber: cargo.from_number,
+            cargoType: cargo.cargo_type,
+            cargoPrice: cargo.price,
+            cargoSize: cargo.size,
+            cargoDate:cargo.date,
         })
     }
     catch(err){
@@ -75,11 +104,23 @@ router.get('/edit', async (req, res, next)=>{
         let cargo = await cargosStore.read(req.query.key)
         res.render('edit_cargo', {
             isCreate: false,
+            caption:"Edit cargo",
             title:"Edit cargo",
             cargoTitle: cargo.title,
+            styles: ['/stylesheets/mystyle.css &ldquo;', '/stylesheets/cargo.css &ldquo;'],
             cargoKey: cargo.key,
-            cargoBody: cargo.body,
-            styles: ['/stylesheets/mystyle.css &ldquo;', '/stylesheets/cargo.css &ldquo;']
+            cargoTrack: cargo.tracking_id,
+            cargoItems: cargo.items,
+            cargoToName: cargo.to_name,
+            cargoFromName: cargo.from_name,
+            cargoToAddress: cargo.to_address,
+            cargoFromAddress: cargo.from_address,
+            cargoToNumber: cargo.to_number,
+            cargoFromNumber: cargo.from_number,
+            cargoType: cargo.cargo_type,
+            cargoPrice: cargo.price,
+            cargoSize: cargo.size,
+            cargoDate:cargo.date,
         })
     }catch(err){
         next(err)
@@ -90,15 +131,12 @@ router.get('/destroy', async(req, res, next)=>{
     try{
         let cargo = await cargosStore.read(req.query.key)
         res.render('delete_cargo', {
-            isCreate: true,
-            title: "Delete cargo",
+            // isCreate: true,
+            title: 'Cargo tracker - Delete',
+            caption: "Delete cargo",
             cargoKey:cargo.key,
             styles: ['/stylesheets/mystyle.css &ldquo;']
         })
-        cargo = await cargosStore.destroy(req.query.key)
-
-        res.redirect('viewall')
-
     }catch (err){
         next(err)
     }
