@@ -27,14 +27,12 @@ exports.InMemoryCargoStore = class InMemoryCargosStore extends AbstractCargoStor
     }
 
     async read(key){
-        console.log(cargos[key])
         if (cargos[key])
             return cargos[key]
         else
             throw new Error('Note ${key} does not exist')
     }
     async destroy(key){
-        console.log(cargos[key])
         if (cargos[key])
             delete cargos[key]
         else

@@ -7,6 +7,7 @@ router.get('/', async function(req, res, next) {
         title: "Cargo Tracker",
       caption: "Cargo Tracker",
       layout: 'default',
+        isHomeActive: "active",
       styles: ['/stylesheets/mystyle.css &ldquo;','/stylesheets/style.css &ldquo;'],
     }
     res.render('index', options)

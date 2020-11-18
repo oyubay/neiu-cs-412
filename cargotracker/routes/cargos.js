@@ -9,6 +9,7 @@ router.get('/add', async (req, res, next) => {
             title:"Add",
             caption: 'Add a cargo',
             cargoKey: await cargosStore.count(),
+            isAddActive: "active",
             styles:['/stylesheets/mystyle.css &ldquo;','/stylesheets/cargo.css &ldquo;']
         })
     } catch (err){
@@ -34,7 +35,7 @@ router.post('/save', async(req, res, next)=>{
     }
 })
 
-router.get('/delete', async(req, res, next)=>{
+router.get('/destroy', async(req, res, next)=>{
     try{
         await cargosStore.destroy(req.query.key)
         res.redirect('viewall')
@@ -55,6 +56,7 @@ router.get('/viewall', async function(req, res, next) {
         let options = {
             caption: 'View all cargo',
             title:"View all",
+            isViewAllActive: "active",
             styles: ['/stylesheets/mystyle.css &ldquo;','/stylesheets/style.css &ldquo;', '/stylesheets/cargo.css &ldquo;'],
             cargoList: extractNotesToLiteral(allCargos)
         }
@@ -127,19 +129,5 @@ router.get('/edit', async (req, res, next)=>{
     }
 })
 
-router.get('/destroy', async(req, res, next)=>{
-    try{
-        let cargo = await cargosStore.read(req.query.key)
-        res.render('delete_cargo', {
-            // isCreate: true,
-            title: 'Cargo tracker - Delete',
-            caption: "Delete cargo",
-            cargoKey:cargo.key,
-            styles: ['/stylesheets/mystyle.css &ldquo;']
-        })
-    }catch (err){
-        next(err)
-    }
-})
 
 module.exports = router;
