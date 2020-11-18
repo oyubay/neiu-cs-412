@@ -28,7 +28,7 @@ router.post('/save', async(req, res, next)=>{
         else
             cargo = await cargosStore.update(req.body.cargoKey,req.body.tracking_id, req.body.from_name, req.body.to_name, req.body.from_address,
                 req.body.to_address, req.body.from_number, req.body.to_number, req.body.cargo_type, req.body.size, req.body.price,
-                date, req.body.items)
+                 req.body.items)
         res.redirect('/cargos/view?key='+req.body.cargoKey)
     }catch (err){
         next(err)
@@ -48,31 +48,19 @@ router.get('/destroy', async(req, res, next)=>{
 router.get('/viewall', async function(req, res, next) {
 
     try {
-        let keyList = await cargosStore.keyList()
-        let keyPromises = keyList.map(key => {
-            return cargosStore.read(key)
-        })
-        let allCargos = await Promise.all(keyPromises)
+        let allCargos = await cargosStore.findAllCargos()
         let options = {
             caption: 'View all cargo',
             title:"View all",
             isViewAllActive: "active",
             styles: ['/stylesheets/mystyle.css &ldquo;','/stylesheets/style.css &ldquo;', '/stylesheets/cargo.css &ldquo;'],
-            cargoList: extractNotesToLiteral(allCargos)
+            cargoList: allCargos
         }
         res.render('viewall_cargo', options)
     }catch(err){
         next(err)
     }
 })
-function extractNotesToLiteral(allCargos){
-    return allCargos.map(cargos=> {
-        return {
-            key: cargos.key,
-            tracking_id:cargos.tracking_id
-        }
-    })
-}
 
 router.get('/view', async(req, res, next)=>{
     try{
@@ -83,7 +71,7 @@ router.get('/view', async(req, res, next)=>{
             styles: ['/stylesheets/mystyle.css &ldquo;', '/stylesheets/cargo.css &ldquo;'],
             cargoKey: cargo.key,
             cargoTrack: cargo.tracking_id,
-            cargoItems: cargo.items,
+            cargoItems: cargo.cargo_items,
             cargoToName: cargo.to_name,
             cargoFromName: cargo.from_name,
             cargoToAddress: cargo.to_address,
@@ -91,9 +79,9 @@ router.get('/view', async(req, res, next)=>{
             cargoToNumber: cargo.to_number,
             cargoFromNumber: cargo.from_number,
             cargoType: cargo.cargo_type,
-            cargoPrice: cargo.price,
-            cargoSize: cargo.size,
-            cargoDate:cargo.date,
+            cargoPrice: cargo.cargo_price,
+            cargoSize: cargo.cargo_size,
+            cargoDate:cargo.cargo_date,
         })
     }
     catch(err){
@@ -112,7 +100,7 @@ router.get('/edit', async (req, res, next)=>{
             styles: ['/stylesheets/mystyle.css &ldquo;', '/stylesheets/cargo.css &ldquo;'],
             cargoKey: cargo.key,
             cargoTrack: cargo.tracking_id,
-            cargoItems: cargo.items,
+            cargoItems: cargo.cargo_items,
             cargoToName: cargo.to_name,
             cargoFromName: cargo.from_name,
             cargoToAddress: cargo.to_address,
@@ -120,9 +108,9 @@ router.get('/edit', async (req, res, next)=>{
             cargoToNumber: cargo.to_number,
             cargoFromNumber: cargo.from_number,
             cargoType: cargo.cargo_type,
-            cargoPrice: cargo.price,
-            cargoSize: cargo.size,
-            cargoDate:cargo.date,
+            cargoPrice: cargo.cargo_price,
+            cargoSize: cargo.cargo_size,
+            cargoDate:cargo.cargo_date,
         })
     }catch(err){
         next(err)

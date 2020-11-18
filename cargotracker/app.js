@@ -5,8 +5,8 @@ const cookieParser = require('cookie-parser')
 const http = require('http')
 const hbs = require('express-handlebars')
 
-const InMemoryCargosStore = require('./models/cargo-memory').InMemoryCargoStore
-let cargosStore = new InMemoryCargosStore()
+const MongooseCargoStore = require('./models/cargo-mongoose').MongooseCargoStore
+let cargosStore = new MongooseCargoStore()
 exports.cargosStore = cargosStore
 
 const appsupport = require('./appsupport')
