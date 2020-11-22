@@ -1,0 +1,88 @@
+<div class="container-fluid">
+    <div class = "row row-cols-8 justify-content-center">
+        <div class="col-8 col-md-5" role="group" >
+            <h5>Tracking number: {{ cargoTrack }}</h5>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td> Sender name: </td>
+                    <td> {{cargoFromName}}</td>
+                </tr>
+                <tr>
+                    <td> Sender address: </td>
+                    <td> {{cargoFromAddress}}</td>
+                </tr>
+                <tr>
+                    <td>Sender phone number: </td>
+                    <td> {{cargoFromNumber}} </td>
+                </tr>
+                <tr>
+                    <td>Receiver name: </td>
+                    <td> {{cargoToName}}</td>
+                </tr>
+                <tr>
+                    <td>Receiver address: </td>
+                    <td> {{cargoToAddress}}</td>
+                </tr>
+                <tr>
+                    <td>Receiver phone number: </td>
+                    <td> {{cargoToNumber}}</td>
+                </tr>
+                <tr>
+                    <td>Receiver address: </td>
+                    <td> {{cargoToAddress}}</td>
+                </tr>
+                <tr>
+                    <td> Cargo size:</td>
+                    <td> {{cargoSize}}</td>
+                </tr>
+                <tr>
+                    <td>Cargo price: </td>
+                    <td> ${{cargoPrice}}</td>
+                </tr>
+                <tr>
+                    <td>Cargo type: </td>
+                    <td> {{cargoType}}</td>
+                </tr>
+                <tr>
+                    <td>Cargo date:  </td>
+                    <td> {{cargoDate}}</td>
+                </tr>
+                <tr>
+                    <td>Cargo items:  </td>
+                    <td> {{cargoItems}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="row text-right">
+                <a class="btn btn-outline-info col-md-6" href="/cargos/edit?key={{cargoKey}}">Edit<i class="edit_icon"  data-feather="edit"></i></a>
+                <a class="btn btn-outline-info col-md-6 float-right"data-toggle="modal"
+                   data-target="#deleteModal"">Delete<i class="edit_icon" data-feather="trash-2"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal-->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this cargo information?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="/cargos/destroy?key={{cargoKey}}">
+                    <button type="button" class="btn btn-info">Yes</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<img class = "main" src="/images/view_cargo.png"/>-->

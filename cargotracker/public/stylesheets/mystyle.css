@@ -37,3 +37,15 @@ IMG.main{
 .edit_icon{
     color: lightseagreen;
 }
+.btn {
+    white-space: normal;
+    word-wrap: break-word;
+}
+td{
+    font-size: medium;
+    white-space: normal;
+    word-wrap: break-word !important;
+}
+table {
+    table-layout: fixed;
+}

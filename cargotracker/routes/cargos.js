@@ -4,7 +4,7 @@ let cargosStore = require('../app').cargosStore
 
 router.get('/add', async (req, res, next) => {
     try {
-        res.render('add_cargo', {
+        res.render('cargos/add_cargo', {
             isCreate: true,
             title:"Add",
             caption: 'Add a cargo',
@@ -56,7 +56,7 @@ router.get('/viewall', async function(req, res, next) {
             styles: ['/stylesheets/mystyle.css &ldquo;','/stylesheets/style.css &ldquo;', '/stylesheets/cargo.css &ldquo;'],
             cargoList: allCargos
         }
-        res.render('viewall_cargo', options)
+        res.render('cargos/viewall_cargo', options)
     }catch(err){
         next(err)
     }
@@ -65,7 +65,7 @@ router.get('/viewall', async function(req, res, next) {
 router.get('/view', async(req, res, next)=>{
     try{
         let cargo = await cargosStore.read(req.query.key)
-        res.render('view_cargo', {
+        res.render('cargos/view_cargo', {
             caption:"View cargo",
             title:"View",
             styles: ['/stylesheets/mystyle.css &ldquo;', '/stylesheets/cargo.css &ldquo;'],
@@ -92,7 +92,7 @@ router.get('/view', async(req, res, next)=>{
 router.get('/edit', async (req, res, next)=>{
     try{
         let cargo = await cargosStore.read(req.query.key)
-        res.render('edit_cargo', {
+        res.render('cargos/edit_cargo', {
             isCreate: false,
             caption:"Edit cargo",
             title:"Edit cargo",

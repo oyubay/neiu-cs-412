@@ -1,0 +1,131 @@
+
+<!--<img class = "main" src="/images/add_box.png"/>-->
+<form class = "edit" method="post" action="/cargos/save">
+    <div class="container-fluid ">
+        <input type = "hidden" name = "saveMethod"
+               value="{{#if isCreate}}create{{else}}update{{/if}}"/>
+        <div class="row">
+
+        </div>
+        <div class="col-sm-6 float-left">
+            <div class="form-group row justify-content-center">
+                <div class=" col-5 text-right font-weight-bold">
+                    <label class="col-5 col-form-label" for="key">Key: </label>
+                </div>
+                <div class="col-7">
+                    <label class="col-5 col-form-label" name="key">{{cargoKey}}</label><br/>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 float-right">
+            <div class="form-group row justify-content-center">
+                <div class=" col-5 text-right font-weight-bold">
+                    <label class="col-form-label" for="tracking_id">Tracking number:</label>
+                </div>
+                <div class="col-7">
+                    <input class="form-control" type = "number"  name="tracking_id"/><br/>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="cargoKey" value="{{cargoKey}}"/>
+
+        <div class="col-sm-6 float-left">
+            <div class="form-group row justify-content-center">
+                <div class="col-5 text-right font-weight-bold">
+                    <label class="col-form-label" for="from_name">Sender name:</label>
+                </div>
+                <div class="col-7">
+                    <input class="form-control" type = "text" name="from_name"/><br/>
+                </div>
+            </div>
+            <div class="form-group row justify-content-center">
+                <div class="col-5 text-right font-weight-bold">
+                    <label class="col-form-label" for="from_address">Sender address:</label>
+                </div>
+                <div class="col-7">
+                    <input class="form-control" type = "text" name="from_address"/><br/>
+                </div>
+            </div>
+            <div class="form-group row justify-content-center">
+                <div class="col-5 text-right font-weight-bold">
+                    <label class="col-form-label" for="from_number">Sender phone number:</label>
+                </div>
+                <div class="col-7">
+                    <input class="form-control" type = "number" name="from_number"/><br/>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 float-right" >
+            <div class="form-group row justify-content-center">
+                <div class="col-5 text-right font-weight-bold">
+                    <label class="col-form-label" for="to_name">Receiver name:</label>
+                </div>
+                <div class="col-7">
+                    <input class="form-control" type = "text" name="to_name"/><br/>
+                </div>
+            </div>
+            <div class="form-group row justify-content-center">
+                <div class="col-5 text-right font-weight-bold">
+                    <label class="col-form-label" for="to_address">Receiver address:</label>
+                </div>
+                <div class="col-7">
+                    <input class="form-control" type = "text" name="to_address"/><br/>
+                </div>
+            </div>
+            <div class="form-group row justify-content-center">
+                <div class="col-5 text-right font-weight-bold">
+                    <label class="col-form-label" for="to_number">Receiver number:</label>
+                </div>
+                <div class="col-7">
+                    <input class="form-control" type = "number" name="to_number"/><br/>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 float-left" >
+            <div class="form-group row justify-content-center">
+                <div class="col-5 text-right font-weight-bold">
+                    <label class="col-form-label" for="cargo_type">Cargo type:</label>
+                </div>
+                <div class="col-7">
+                    <input type = "radio" name="cargo_type" id="air-transport" value="air-transport"/>Air transport<br/>
+                    <input  type = "radio" name="cargo_type" id="auto-transport" value="auto-transport"/>Auto transport<br/>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 float-left" >
+            <div class="form-group row justify-content-center">
+                <div class="col-5 text-right font-weight-bold">
+                    <label class="col-form-label" for="size">Cargo size(lb):</label>
+                </div>
+                <div class="col-7">
+                    <input class="form-control" type="number" name="size" /><br/>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 float-left" >
+            <div class="form-group row justify-content-center">
+                <div class="col-5 text-right font-weight-bold">
+                    <label class="col-form-label" for="price">Cargo price($):</label>
+                </div>
+                <div class="col-7">
+                    <input class="form-control" type="number" step="0.01" name="price" /><br/>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="cargoDate" value="{{cargoDate}}"/>
+
+        <div class="form-group row justify-content-center">
+            <div class="col-2 text-right font-weight-bold">
+                <label class="col-form-label" for="items">Cargo items:</label>
+            </div>
+            <div class="col-10">
+                <textarea class="form-control" rows=5 name="items"></textarea><br/>
+            </div>
+        </div>
+        <div class="form-group row justify-content-center ">
+            <input class="col-3 btn-outline-info btn-md btn btn-block" type="submit" value="Save"/>
+        </div>
+    </div>
+</form>

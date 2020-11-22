@@ -47,7 +47,7 @@ const cargoSchema = new mongoose.Schema({
     },
     cargo_type:{
         type:String,
-        required:true,
+        required:[true,'Please choose your cargo type']
     },
     cargo_size:{
         type:Number,
