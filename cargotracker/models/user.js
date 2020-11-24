@@ -1,10 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const SchemaTypes = mongoose.SchemaTypes
-
-exports.AbstractUserStore = class AbstractUserStore {
-    async create(reqBody){ }
-}
+const bcrypt = require('bcrypt')
 
 const UserSchema = new Schema({
     name:{
@@ -19,7 +16,7 @@ const UserSchema = new Schema({
     },
     email:{
         type:String,
-        require:[true, 'Email is required'],
+        required:[true, 'Email is required'],
         unique:true
     },
     password:{
@@ -34,8 +31,21 @@ const UserSchema = new Schema({
     ]
 })
 
-UserSchema.virtual('fullname').get(function (){
+UserSchema.virtual('fullName').get(function (){
     return `${this.name.first} ${this.name.last}`
 })
 
+UserSchema.pre('save', async function (next){
+    let user = this
+    try{
+        user.password= await bcrypt.hash(user.password, 10)
+    }catch (error){
+        console.log(`Error in hashing password: ${error.message}` )
+    }
+})
+
+UserSchema.methods.passwordComparison = async function(inputPassword){
+    let user = this
+    return await bcrypt.compare(inputPassword, user.password)
+}
 exports.User = mongoose.model('users', UserSchema)

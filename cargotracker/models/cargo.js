@@ -6,9 +6,7 @@ exports.AbstractCargoStore = class AbstractCargoStore{
     async destroy (key) { }
     async keyList(){ }
     async count() { }
-
 }
-
 const mongoose = require('mongoose')
 const cargoSchema = new mongoose.Schema({
     key:{

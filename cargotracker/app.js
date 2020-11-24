@@ -6,16 +6,11 @@ const hbs = require('express-handlebars')
 const mongoose = require('mongoose')
 const session = require('express-session')
 const MemoryStore = require('memorystore')(session)
-const connectFlas = require('connect-flash')
+const connectFlash = require('connect-flash')
 
 const MongooseCargoStore = require('./models/cargo-mongoose').MongooseCargoStore
 let cargosStore = new MongooseCargoStore()
 exports.cargosStore = cargosStore
-
-const MongooseUserStore = require('./models/user-mongoose').MongooseUserStore
-let userStore = new MongooseUserStore()
-exports.userStore = userStore
-
 
 mongoose.connect(process.env.DB_URL, {
     useNewUrlParser: true,
@@ -46,6 +41,16 @@ app.engine('hbs', hbs({
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
+app.use(session({
+    secret: 'secret_password',
+    cookie: {maxAge:86400000},
+    store: new MemoryStore({
+        checkPeriod: 86400000
+    }),
+    resave:false,
+    saveUninitialized:false
+}))
+app.use(connectFlash())
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.use('/assets/vendor/bootstrap', express.static(path.join(__dirname, 'node_modules', 'bootstrap', 'dist')))
@@ -53,7 +58,10 @@ app.use('/assets/vendor/jquery', express.static(path.join(__dirname, 'node_modul
 app.use('/assets/vendor/popper.js', express.static(path.join(__dirname, 'node_modules', 'popper.js', 'dist', 'umd')))
 app.use('/assets/vendor/feather-icons', express.static(path.join(__dirname, 'node_modules', 'feather-icons', 'dist')))
 //this will be executed everytime request comes in
-
+app.use((req, res, next) => {
+    res.locals.flashMessages = req.flash()
+    next()
+})
 //Router function lists
 app.use('/', indexRouter)
 app.use('/cargos', cargosRouter)

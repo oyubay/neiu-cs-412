@@ -2,6 +2,16 @@ let Cargo = require ('./cargo').Cargo
 let AbstractCargoStore = require('./cargo').AbstractCargoStore
 
 const mongoose = require('mongoose')
+const connectDB = async ()=>{
+    try{
+        await mongoose.connect(process.env.DB_URL, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        })
+    } catch (err) {
+        console.log(err)
+    }
+}
 
 exports.MongooseCargoStore = class MongooseCargoStore extends AbstractCargoStore {
 
@@ -23,7 +33,8 @@ exports.MongooseCargoStore = class MongooseCargoStore extends AbstractCargoStore
         return cargo
     }
 
-    async create(key, tracking_id, from_name, to_name, from_address, to_address, from_number, to_number, cargo_type, cargo_size, cargo_price, cargo_date, cargo_items){
+    async create(key, tracking_id, from_name, to_name, from_address, to_address, from_number,
+                 to_number, cargo_type, cargo_size, cargo_price, cargo_date, cargo_items){
         let count = await Cargo.countDocuments({})
         let cargo = new Cargo({
             key:count,
