@@ -1,19 +1,15 @@
-exports.AbstractCargoStore = class AbstractCargoStore{
-    async close() { }
-    async update(key, tracking_id, from_name, to_name, from_address, to_address, from_number, to_number, cargo_type, cargo_size, cargo_price, cargo_date, cargo_items) { }
-    async create(key, tracking_id, from_name, to_name, from_address, to_address, from_number, to_number, cargo_type, cargo_size, cargo_price, cargo_date, cargo_items) { }
-    async read(key) { }
-    async destroy (key) { }
-    async keyList(){ }
-    async count() { }
-}
+// exports.AbstractCargoStore = class AbstractCargoStore{
+//     async close() { }
+//     async update(tracking_id, from_name, to_name, from_address, to_address, from_number, to_number, cargo_type, cargo_size, cargo_price, cargo_date, cargo_items) { }
+//     async create(tracking_id, from_name, to_name, from_address, to_address, from_number, to_number, cargo_type, cargo_size, cargo_price, cargo_date, cargo_items) { }
+//     async read(key) { }
+//     async destroy (key) { }
+//     async keyList(){ }
+//     async count() { }
+// }
 const mongoose = require('mongoose')
+
 const cargoSchema = new mongoose.Schema({
-    key:{
-        type:Number,
-        required: true,
-        unique: true
-    },
     tracking_id:{
         type:Number,
         required: true,
@@ -64,5 +60,6 @@ const cargoSchema = new mongoose.Schema({
         required:true
     }
 })
+cargoSchema.set('toObject', { getter: true, virtual: true})
 
 exports.Cargo = mongoose.model('cargotrackers', cargoSchema)

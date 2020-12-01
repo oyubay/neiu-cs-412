@@ -14,6 +14,11 @@ const UserSchema = new Schema({
             trim: true
         }
     },
+    phoneNumber:{
+        type:Number,
+        // required:[true, 'Phone number is required'],
+        unique: true
+    },
     email:{
         type:String,
         required:[true, 'Email is required'],
@@ -23,6 +28,7 @@ const UserSchema = new Schema({
         type:String,
         required:[true, 'Password is required']
     },
+
     cargos:[
         {
             type:SchemaTypes.ObjectID,

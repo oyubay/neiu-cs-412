@@ -55,7 +55,7 @@
                 </tbody>
             </table>
             <div class="row text-right">
-                <a class="btn btn-outline-info col-md-6" href="/cargos/edit?key={{cargoKey}}">Edit<i class="edit_icon"  data-feather="edit"></i></a>
+                <a class="btn btn-outline-info col-md-6" href="/cargos/edit?id={{id}}">Edit<i class="edit_icon"  data-feather="edit"></i></a>
                 <a class="btn btn-outline-info col-md-6 float-right"data-toggle="modal"
                    data-target="#deleteModal"">Delete<i class="edit_icon" data-feather="trash-2"></i></a>
             </div>
@@ -78,7 +78,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a href="/cargos/destroy?key={{cargoKey}}">
+                <a href="/cargos/destroy?id={{id}}">
                     <button type="button" class="btn btn-info">Yes</button>
                 </a>
             </div>

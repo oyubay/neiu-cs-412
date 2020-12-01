@@ -3,27 +3,19 @@
     <div class="container-fluid ">
         <input type = "hidden" name = "saveMethod"
                value="{{#if isCreate}}create{{else}}update{{/if}}"/>
-        <div class="col-sm-6 float-left">
-            <div class="form-group row justify-content-center">
-                <div class=" col-5 text-right font-weight-bold">
-                    <label class="col-5 col-form-label" for="key">Key: </label>
-                </div>
-                <div class="col-7">
-                    <label class="col-5 col-form-label" name="key">{{cargoKey}}</label>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 float-right">
-            <div class="form-group row justify-content-center">
-                <div class=" col-5 text-right font-weight-bold">
-                    <label class="col-form-label" for="tracking_id">Tracking number:</label>
-                </div>
-                <div class="col-7">
-                    <input class="form-control" type = "number" name="tracking_id" value="{{cargoTrack}}"/><br/>
+        <div class="row">
+            <div class="col-sm-6 float-left">
+                <div class="form-group row justify-content-center">
+                    <div class=" col-5 text-right font-weight-bold">
+                        <label class="col-form-label" for="tracking_id">Tracking number:</label>
+                    </div>
+                    <div class="col-7">
+                        <input class="form-control" type = "number"  name="tracking_id" value="{{cargoTrack}}"/><br/>
+                    </div>
                 </div>
             </div>
         </div>
-        <input type="hidden" name="cargoKey" value="{{cargoKey}}"/>
+        <input type="hidden" name="id" value="{{id}}"/>
 
         <div class="col-sm-6 float-left">
             <div class="form-group row justify-content-center">
@@ -85,8 +77,10 @@
                     <label class="col-form-label" for="cargo_type">Cargo type:</label>
                 </div>
                 <div class="col-7">
-                    <input type = "radio" name="cargo_type" id="air-transport" value="air-transport"/>Air transport<br/>
-                    <input  type = "radio" name="cargo_type" id="auto-transport" value="auto-transport"/>Auto transport<br/>
+                    <input type = "radio" name="cargo_type" id="air-transport" value="air-transport"
+                           {{#if airTransport}}checked{{/if}}/>Air transport<br/>
+                    <input  type = "radio" name="cargo_type" id="auto-transport" value="auto-transport"
+                            {{#if autoTransport}}checked{{/if}}/>Auto transport<br/>
                 </div>
             </div>
         </div>

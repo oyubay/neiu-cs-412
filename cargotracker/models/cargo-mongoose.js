@@ -15,7 +15,8 @@ const connectDB = async ()=>{
 
 exports.MongooseCargoStore = class MongooseCargoStore extends AbstractCargoStore {
 
-    async update(key, tracking_id, from_name, to_name, from_address, to_address, from_number, to_number, cargo_type,cargo_size, cargo_price,  cargo_items) {
+    async update(key, tracking_id, from_name, to_name, from_address, to_address, from_number, to_number, cargo_type,cargo_size,
+                 cargo_price,  cargo_items) {
         let cargo = await Cargo.findOneAndUpdate({key:key},{
             tracking_id:tracking_id,
             from_name: from_name,

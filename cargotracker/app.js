@@ -8,9 +8,9 @@ const session = require('express-session')
 const MemoryStore = require('memorystore')(session)
 const connectFlash = require('connect-flash')
 
-const MongooseCargoStore = require('./models/cargo-mongoose').MongooseCargoStore
-let cargosStore = new MongooseCargoStore()
-exports.cargosStore = cargosStore
+// const MongooseCargoStore = require('./models/cargo-mongoose').MongooseCargoStore
+// let cargosStore = new MongooseCargoStore()
+// exports.cargosStore = cargosStore
 
 mongoose.connect(process.env.DB_URL, {
     useNewUrlParser: true,
@@ -42,7 +42,7 @@ app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(session({
-    secret: 'secret_password',
+    secret: process.env.SECRET,
     cookie: {maxAge:86400000},
     store: new MemoryStore({
         checkPeriod: 86400000

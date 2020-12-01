@@ -1,43 +1,129 @@
 let Cargo = require ('../models/cargo').Cargo
 
 exports.cargoController ={
-    create = async (tracking_id, from_name, to_name, from_address, to_address, from_number,
-        to_number, cargo_type, cargo_size, cargo_price, cargo_date, cargo_items)=> {
-        let cargo = new Cargo({
-            tracking_id: tracking_id,
-            from_name: from_name,
-            from_address: from_address,
-            from_number: from_number,
-            to_name: to_name,
-            to_number: to_number,
-            to_address: to_address,
-            cargo_type: cargo_type,
-            cargo_date:cargo_date,
-            cargo_price: cargo_price,
-            cargo_size:cargo_size,
-            cargo_items:cargo_items
-        })
-        cargo = await cargo.save()
-        return cargo
-    }
-    update: async(req, res, next)=>{
+    add: async (req, res, next) =>{
+        try {
+            res.render('cargos/add_cargo', {
+                isCreate: true,
+                title:"Add",
+                caption: 'Add a cargo',
+                isAddActive: "active",
+                styles:['/stylesheets/mystyle.css &ldquo;','/stylesheets/cargo.css &ldquo;']
+            })
+        }catch (err){
+            next(err)
+        }
+    },
 
-    }
-    async update(key, tracking_id, from_name, to_name, from_address, to_address, from_number, to_number, cargo_type,cargo_size, cargo_price,  cargo_items) {
-        let cargo = await Cargo.findOneAndUpdate({key:key},{
-            tracking_id:tracking_id,
-            from_name: from_name,
-            from_address: from_address,
-            from_number: from_number,
-            to_name: to_name,
-            to_number: to_number,
-            to_address: to_address,
-            cargo_type: cargo_type,
-            // cargo_date:cargo_date,
-            cargo_price: cargo_price,
-            cargo_size:cargo_size,
-            cargo_items:cargo_items
-        })
+    edit: async(req, res, next)=>{
+        try{
+            const cargo = await Cargo.findOne({_id:req.query.id.trim()})
+            let airTransport, autoTransport;
+            if (cargo.cargo_type === 'air-transport')
+                airTransport=true
+            else autoTransport=true
+            res.render('cargos/edit_cargo', {
+                isCreate: false,
+                caption:"Edit cargo",
+                title:"Edit cargo",
+                cargoTitle: cargo.title,
+                styles: ['/stylesheets/mystyle.css &ldquo;', '/stylesheets/cargo.css &ldquo;'],
+                id: req.query.id,
+                cargoTrack: cargo.tracking_id,
+                cargoItems: cargo.cargo_items,
+                cargoToName: cargo.to_name,
+                cargoFromName: cargo.from_name,
+                cargoToAddress: cargo.to_address,
+                cargoFromAddress: cargo.from_address,
+                cargoToNumber: cargo.to_number,
+                cargoFromNumber: cargo.from_number,
+                cargoType: cargo.cargo_type,
+                airTransport:airTransport,
+                autoTransport:autoTransport,
+                cargoPrice: cargo.cargo_price,
+                cargoSize: cargo.cargo_size,
+                cargoDate:cargo.cargo_date,
+            })
+        }catch(err){
+            next(err)
+        }
+    },
+
+    view: async(req, res, next)=>{
+        try{
+            const cargo = await Cargo.findOne({_id:req.query.id.trim()})
+            res.render('cargos/view_cargo', {
+                caption:"View cargo",
+                title:"View",
+                styles: ['/stylesheets/mystyle.css &ldquo;', '/stylesheets/cargo.css &ldquo;'],
+                id: req.query.id,
+                cargoTrack: cargo.tracking_id,
+                cargoItems: cargo.cargo_items,
+                cargoToName: cargo.to_name,
+                cargoFromName: cargo.from_name,
+                cargoToAddress: cargo.to_address,
+                cargoFromAddress: cargo.from_address,
+                cargoToNumber: cargo.to_number,
+                cargoFromNumber: cargo.from_number,
+                cargoType: cargo.cargo_type,
+                cargoPrice: cargo.cargo_price,
+                cargoSize: cargo.cargo_size,
+                cargoDate:cargo.cargo_date,
+            })
+        }
+        catch(err){
+            next(err)
+        }
+    },
+    viewAll: async ( req, res, next)=>{
+        try {
+            const cargos=await Cargo.find({})
+            let allCargos = await cargos.map(cargo => {
+                return {
+                    id:cargo._id,
+                    tracking_id:cargo.tracking_id
+                }
+            })
+            let options = {
+                caption: 'View all cargo',
+                title:"View all",
+                isViewAllActive: "active",
+                styles: ['/stylesheets/mystyle.css &ldquo;','/stylesheets/style.css &ldquo;', '/stylesheets/cargo.css &ldquo;'],
+                cargoList: allCargos
+            }
+            res.render('cargos/viewall_cargo', options)
+        }catch(err){
+            next(err)
+        }
+    },
+    create: async(req, res, next)=>{
+        let cargo = await Cargo.create(getCargoParams(req.body))
         return cargo
+    },
+
+    update: async(req, res, next)=>{
+        let cargo = await Cargo.findByIdAndUpdate({_id:req.body.id},getCargoParams(req.body), {new: true})
+        return cargo;
+    },
+    delete: async(req, res, next)=>{
+        let cargo = await Cargo.findByIdAndDelete({_id:req.query.id})
+        return cargo
+    }
+}
+const getCargoParams = body =>{
+    let date = new Date()
+    return{
+        tracking_id:body.tracking_id,
+        from_name: body.from_name,
+        from_address: body.from_address,
+        from_number: body.from_number,
+        to_name: body.to_name,
+        to_number: body.to_number,
+        to_address: body.to_address,
+        cargo_type: body.cargo_type,
+        cargo_date:date,
+        cargo_price: body.price,
+        cargo_size: body.size,
+        cargo_items: body.items
     }
 }
