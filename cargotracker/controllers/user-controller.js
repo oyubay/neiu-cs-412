@@ -1,5 +1,7 @@
 let User = require ('../models/user').User
 const{body, validationResult}= require('express-validator')
+const passport = require('passport')
+
 
 exports.userController ={
      create: async (req, res, next) =>{
@@ -10,28 +12,55 @@ exports.userController ={
         } else {
             try {
                 let userParams = getUserParams(req.body)
-                let user = await User.create(userParams)
+                let newUser = new User(userParams)
+                let user = await User.register(newUser, req.body.password)
                 req.flash('success', `${user.fullName}'s account created successfully`)
                 res.redirect('/')
             } catch (error) {
                 console.log(`Error saving user: ${error.message}`)
-                req.flash('error', `Failed to create user account because ${error.message}`)
-                res.redirect('/users/register')
+                req.flash('error', `Failed to create user account. Invalid email.`)
+                res.redirect('back')
             }
         }
     },
-    authenticate: async (req, res, next)=>{
-         try{
-             let user = await User.findOne({email: req.body.email})
-             if(user && await user.passwordComparison(req.body.password)){
-                 req.flash('success', `${user.fullName} logged in as successfully`)
-                 res.redirect('/')
-             } else{
-                 req.flash('error', 'Your email or password is incorrect. Please try again')
-                 res.redirect('/users/login')
+    authenticate: async (req, res, next)=> {
+         await passport.authenticate('local', function (err, user, info) {
+             if(err)
+                 return next(err)
+                 console.log(err)
+             if (!user){
+                 req.flash('error', 'Failed to login')
+                 return res.redirect('back')
              }
-         } catch (error){
-             req.flash('error', 'Your email or password is incorrect. Please try again')
+             req.logIn(user, function (err){
+                 if(err)
+                     return next(err)
+                 req.flash('success', `${user.fullName} logged in!`)
+                 return res.redirect('/')
+             })
+         })(req, res, next);
+    },
+    viewUser: async (req, res, next)=>{
+         if (req.isAuthenticated()){
+             try{
+                 const user = await User.findOne({id: req.query._id})
+                 console.log(user)
+                 res.render('users/viewUser', {
+                     id:req.query.id,
+                     caption: 'View user',
+                     title: 'View',
+                     styles: ['/stylesheets/mystyle.css &ldquo;','/stylesheets/style.css &ldquo;', '/stylesheets/cargo.css &ldquo;'],
+                     firstName: user.name.first,
+                     lastName: user.name.last,
+                     email: user.email,
+                     phone: user.phoneNumber
+                 })
+
+             }catch (err){
+                 next(err)
+             }
+         }else{
+             req.flash('error', 'Please log in to access Cargo information')
              res.redirect('/users/login')
          }
     }

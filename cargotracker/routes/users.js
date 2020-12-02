@@ -23,7 +23,18 @@ router.post('/register',registerValidations , async(req, res, next)=>{
 })
 
 router.post('/login', async(req, res, next)=>{
-    await userController.authenticate(req, res)
+    await userController.authenticate(req, res, next)
+})
+
+router.get('/logout', async (req, res, next)=>{
+    req.logout()
+    req.flash('success', 'You are successfully logged out')
+    res.redirect('/')
+})
+
+router.get('/viewUser', async (req, res, next)=>{
+    await userController.viewUser(req, res, next)
+
 })
 
 module.exports = router
