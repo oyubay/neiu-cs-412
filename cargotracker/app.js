@@ -10,10 +10,6 @@ const connectFlash = require('connect-flash')
 const passport = require('passport')
 const { User }= require('./models/user')
 
-// const MongooseCargoStore = require('./models/cargo-mongoose').MongooseCargoStore
-// let cargosStore = new MongooseCargoStore()
-// exports.cargosStore = cargosStore
-
 mongoose.connect(process.env.DB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

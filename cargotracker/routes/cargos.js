@@ -7,32 +7,12 @@ router.get('/add', async (req, res, next) => {
 
         await cargoController.add(req, res, next)
 })
-
-// router.post('/save',cargoValidations,  async(req, res, next)=>{
-//     try{
-//         let cargo
-//         if(req.body.saveMethod === "create"){
-//             cargo = await cargoController.create(req, res, next)
-//             console.log(cargo)
-//             req.user.cargos.push(cargo.id.trim())
-//             req.user = await User.findByIdAndUpdate({_id:req.user.id.trim() }, {cargos:req.user.cargos}, {new: true})
-//         }
-//         else{
-//             cargo = await cargoController.update(req, res, next)
-//         }
-//         res.redirect(`/cargos/view?id=${cargo._id}`)
-//     }catch (err){
-//         next(err)
-//     }
-// })
 router.post('/save',cargoValidations,  async(req, res, next)=>{
 
-        if(req.body.saveMethod === "create"){
+        if(req.body.saveMethod === "create")
             await cargoController.create(req, res, next)
-        }
-        else{
+        else
             await cargoController.update(req, res, next)
-        }
 
 })
 

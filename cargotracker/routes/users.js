@@ -39,7 +39,6 @@ router.get('/logout', async (req, res, next)=>{
 
 router.get('/view', async (req, res, next)=>{
     await userController.view(req, res, next)
-
 })
 
 router.get('/edit', async (req, res, next)=>{

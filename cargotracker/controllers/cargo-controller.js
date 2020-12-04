@@ -1,6 +1,7 @@
 let Cargo = require ('../models/cargo').Cargo
 let {User} = require('../models/user')
 const{body, validationResult}= require('express-validator')
+const moment = require('moment')
 
 exports.cargoController ={
     add: async (req, res, next) =>{
@@ -152,7 +153,7 @@ exports.cargoController ={
     }
 }
 const getCargoParams = body =>{
-    let date = new Date()
+    let date = moment()
     return{
         from_name: body.from_name,
         from_address: body.from_address,
