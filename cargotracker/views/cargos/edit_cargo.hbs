@@ -3,18 +3,6 @@
     <div class="container-fluid ">
         <input type = "hidden" name = "saveMethod"
                value="{{#if isCreate}}create{{else}}update{{/if}}"/>
-        <div class="row">
-            <div class="col-sm-6 float-left">
-                <div class="form-group row justify-content-center">
-                    <div class=" col-5 text-right font-weight-bold">
-                        <label class="col-form-label" for="tracking_id">Tracking number:</label>
-                    </div>
-                    <div class="col-7">
-                        <input class="form-control" type = "number"  name="tracking_id" value="{{cargoTrack}}" /><br/>
-                    </div>
-                </div>
-            </div>
-        </div>
         <input type="hidden" name="id" value="{{id}}"/>
 
         <div class="col-sm-6 float-left">
@@ -28,18 +16,18 @@
             </div>
             <div class="form-group row justify-content-center">
                 <div class="col-5 text-right font-weight-bold">
-                    <label class="col-form-label" for="from_address">Sender address:</label>
-                </div>
-                <div class="col-7">
-                    <input class="form-control" type = "text" name="from_address" value="{{cargoFromAddress}}"/><br/>
-                </div>
-            </div>
-            <div class="form-group row justify-content-center">
-                <div class="col-5 text-right font-weight-bold">
                     <label class="col-form-label" for="from_number">Sender phone number:</label>
                 </div>
                 <div class="col-7">
                     <input class="form-control" type = "number" name="from_number" value="{{cargoFromNumber}}"/><br/>
+                </div>
+            </div>
+            <div class="form-group row justify-content-center">
+                <div class="col-5 text-right font-weight-bold">
+                    <label class="col-form-label" for="from_address">Sender address:</label>
+                </div>
+                <div class="col-7">
+                    <input class="form-control" type = "text" name="from_address" value="{{cargoFromAddress}}"/><br/>
                 </div>
             </div>
         </div>
@@ -55,18 +43,18 @@
             </div>
             <div class="form-group row justify-content-center">
                 <div class="col-5 text-right font-weight-bold">
-                    <label class="col-form-label" for="to_address">Receiver address:</label>
-                </div>
-                <div class="col-7">
-                    <input class="form-control" type = "text" name="to_address" value="{{cargoToAddress}}"/><br/>
-                </div>
-            </div>
-            <div class="form-group row justify-content-center">
-                <div class="col-5 text-right font-weight-bold">
                     <label class="col-form-label" for="to_number">Receiver number:</label>
                 </div>
                 <div class="col-7">
                     <input class="form-control" type = "text" name="to_number" value="{{cargoToNumber}}"/><br/>
+                </div>
+            </div>
+            <div class="form-group row justify-content-center">
+                <div class="col-5 text-right font-weight-bold">
+                    <label class="col-form-label" for="to_address">Receiver address:</label>
+                </div>
+                <div class="col-7">
+                    <input class="form-control" type = "text" name="to_address" value="{{cargoToAddress}}"/><br/>
                 </div>
             </div>
         </div>

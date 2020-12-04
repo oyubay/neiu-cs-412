@@ -2,7 +2,6 @@ let User = require ('../models/user').User
 const{body, validationResult}= require('express-validator')
 const passport = require('passport')
 
-
 exports.userController ={
      create: async (req, res, next) =>{
         const errors= validationResult(req)
@@ -23,6 +22,18 @@ exports.userController ={
             }
         }
     },
+    update: async(req, res, next)=>{
+            try{
+                let user = await User.findByIdAndUpdate({_id: req.body.id}, getUserParams(req.body), {new: true})
+                req.flash('success', `${user.fullName}'s information updated successfully`)
+                res.redirect(`/users/view?id=${user._id}`)
+            }
+            catch (error) {
+                console.log(`Error saving user: ${error.message}`)
+                req.flash('error', `Failed to update user information.`)
+                res.redirect('back')
+            }
+    },
     authenticate: async (req, res, next)=> {
          await passport.authenticate('local', function (err, user, info) {
              if(err)
@@ -40,16 +51,16 @@ exports.userController ={
              })
          })(req, res, next);
     },
-    viewUser: async (req, res, next)=>{
+    view: async (req, res, next)=>{
          if (req.isAuthenticated()){
              try{
-                 const user = await User.findOne({id: req.query._id})
+                 const user = await User.findOne({_id: req.query.id})
                  console.log(user)
                  res.render('users/viewUser', {
                      id:req.query.id,
                      caption: 'View user',
                      title: 'View',
-                     styles: ['/stylesheets/mystyle.css &ldquo;','/stylesheets/style.css &ldquo;', '/stylesheets/cargo.css &ldquo;'],
+                     styles: ['/stylesheets/mystyle.css &ldquo;', '/stylesheets/cargo.css &ldquo;'],
                      firstName: user.name.first,
                      lastName: user.name.last,
                      email: user.email,
@@ -63,7 +74,31 @@ exports.userController ={
              req.flash('error', 'Please log in to access Cargo information')
              res.redirect('/users/login')
          }
-    }
+    },
+    edit: async(req, res, next)=>{
+        if (req.isAuthenticated()) {
+            try {
+                const user = await User.findOne({_id: req.query.id})
+                res.render('users/edit_user', {
+                    id:req.query.id,
+                    isCreate: false,
+                    caption: "Edit user",
+                    title: "Edit user",
+                    styles: ['/stylesheets/mystyle.css &ldquo;', '/stylesheets/cargo.css &ldquo;'],
+                    firstName: user.name.first,
+                    lastName: user.name.last,
+                    email: user.email,
+                    phoneNumber: user.phoneNumber,
+                    password:user.password
+                })
+            } catch (err) {
+                next(err)
+            }
+        }else{
+            req.flash('error', 'Please log in to access Cargo information')
+            res.redirect('/users/login')
+        }
+    },
 }
 const getUserParams = body =>{
     return{
@@ -76,6 +111,7 @@ const getUserParams = body =>{
         password: body.password
     }
 }
+
 exports.registerValidations =[
     body('first')
         .notEmpty().withMessage('First name is required')

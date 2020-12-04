@@ -1,5 +1,6 @@
 let Cargo = require ('../models/cargo').Cargo
 let {User} = require('../models/user')
+const{body, validationResult}= require('express-validator')
 
 exports.cargoController ={
     add: async (req, res, next) =>{
@@ -7,10 +8,12 @@ exports.cargoController ={
             try {
                 res.render('cargos/add_cargo', {
                     isCreate: true,
-                    title:"Add",
-                    caption: 'Add a cargo',
+                    title:"Send",
+                    caption: 'Send a cargo',
                     isAddActive: "active",
-                    styles:['/stylesheets/mystyle.css &ldquo;','/stylesheets/cargo.css &ldquo;']
+                    styles:['/stylesheets/mystyle.css &ldquo;','/stylesheets/cargo.css &ldquo;'],
+                    cargoFromName: req.user.fullName,
+                    cargoFromNumber: req.user.phoneNumber
                 })
             }catch (err){
                 next(err)
@@ -36,7 +39,6 @@ exports.cargoController ={
                     cargoTitle: cargo.title,
                     styles: ['/stylesheets/mystyle.css &ldquo;', '/stylesheets/cargo.css &ldquo;'],
                     id: req.query.id,
-                    cargoTrack: cargo.tracking_id,
                     cargoItems: cargo.cargo_items,
                     cargoToName: cargo.to_name,
                     cargoFromName: cargo.from_name,
@@ -69,7 +71,7 @@ exports.cargoController ={
                     title: "View",
                     styles: ['/stylesheets/mystyle.css &ldquo;', '/stylesheets/cargo.css &ldquo;'],
                     id: req.query.id,
-                    cargoTrack: cargo.tracking_id,
+                    cargoTrack: req.query.id,
                     cargoItems: cargo.cargo_items,
                     cargoToName: cargo.to_name,
                     cargoFromName: cargo.from_name,
@@ -100,14 +102,14 @@ exports.cargoController ={
                 let allCargos = await cargos.map(cargo => {
                     return {
                         id: cargo._id,
-                        tracking_id: cargo.tracking_id
+                        to_name: cargo.to_name
                     }
                 })
                 let options = {
                     caption: 'View all cargo',
                     title: "View all",
                     isViewAllActive: "active",
-                    styles: ['/stylesheets/mystyle.css &ldquo;', '/stylesheets/style.css &ldquo;', '/stylesheets/cargo.css &ldquo;'],
+                    styles: ['/stylesheets/mystyle.css &ldquo;', '/stylesheets/cargo.css &ldquo;'],
                     cargoList: allCargos
                 }
                 res.render('cargos/viewall_cargo', options)
@@ -119,14 +121,28 @@ exports.cargoController ={
             res.redirect('/users/login')
         }
     },
-    create: async(req, res, next)=>{
-        let cargo = await Cargo.create(getCargoParams(req.body))
-        return cargo
-    },
 
+    create: async(req, res, next)=>{
+        const errors= validationResult(req)
+        if (!errors.isEmpty()){
+            req.flash('error', errors.array().map(e=> e.msg + '</br>').join(''))
+            res.redirect('add')
+        } else {
+            try {
+                let cargo = await Cargo.create(getCargoParams(req.body))
+                req.user.cargos.push(cargo.id)
+                req.user = await User.findByIdAndUpdate({_id:req.user.id.trim() }, {cargos:req.user.cargos}, {new: true})
+                res.redirect(`/cargos/view?id=${cargo._id}`)
+            } catch (error) {
+                console.log(`Error adding a cargo: ${error.message}`)
+                req.flash('error', `Failed to add a cargo.`)
+                res.redirect('back')
+            }
+        }
+    },
     update: async(req, res, next)=>{
         let cargo = await Cargo.findByIdAndUpdate({_id:req.body.id},getCargoParams(req.body), {new: true})
-        return cargo;
+        res.redirect(`/cargos/view?id=${cargo._id}`)
     },
     delete: async(req, res, next)=>{
         let cargo = await Cargo.findByIdAndDelete({_id:req.query.id})
@@ -138,7 +154,6 @@ exports.cargoController ={
 const getCargoParams = body =>{
     let date = new Date()
     return{
-        tracking_id:body.tracking_id,
         from_name: body.from_name,
         from_address: body.from_address,
         from_number: body.from_number,
@@ -152,3 +167,34 @@ const getCargoParams = body =>{
         cargo_items: body.items
     }
 }
+exports.cargoValidations =[
+    body('from_name')
+        .notEmpty().withMessage('Sender name is required')
+        .isLength({min: 2}).withMessage('Sender name must be at least 2 characters'),
+    body('from_address')
+        .notEmpty().withMessage('Sender address is required'),
+    body('from_number')
+        .notEmpty().withMessage('Sender phone number is required')
+        .isNumeric().withMessage('Please add a sender phone number')
+        .isLength({min:10, max:10}).withMessage('Sender phone number has to be 10 digits'),
+
+    body('to_name')
+        .notEmpty().withMessage('Receiver name is required')
+        .isLength({min: 2}).withMessage('Receiver  name must be at least 2 characters'),
+    body('to_address')
+        .notEmpty().withMessage('Receiver address is required'),
+    body('to_number')
+        .notEmpty().withMessage('Receiver phone number is required')
+        .isNumeric().withMessage('Please add a receiver  phone number')
+        .isLength({min:10, max:10}).withMessage('Receiver phone number has to be 10 digits'),
+
+    body('price')
+        .notEmpty().withMessage('Cargo price is required')
+        .isNumeric().withMessage('Only numeric value is required'),
+    body('size')
+        .notEmpty().withMessage('Cargo size is required')
+        .isNumeric().withMessage('Only numeric value is required'),
+    body('items')
+        .notEmpty().withMessage('Cargo items are required')
+        .isLength({min: 2}).withMessage('Cargo items must be at least 2 characters'),
+]

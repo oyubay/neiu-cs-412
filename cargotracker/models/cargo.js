@@ -10,11 +10,11 @@
 const mongoose = require('mongoose')
 
 const cargoSchema = new mongoose.Schema({
-    tracking_id:{
-        type:Number,
-        required: true,
-        unique: true
-    },
+    // tracking_id:{
+    //     type:Number,
+    //     required: true,
+    //     unique: true
+    // },
     from_name:{
         type:String,
         required:[true, 'Sender name is required']

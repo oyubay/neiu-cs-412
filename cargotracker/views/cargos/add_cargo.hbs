@@ -1,23 +1,17 @@
 
 <!--<img class = "main" src="/images/add_box.png"/>-->
+<div class="container-fluid mt-2">
+    <div class="row justify-content-center">
+        <h2>Send a cargo</h2>
+    </div>
+</div>
+<div class="container-fluid m-2">
+    {{>user_messages}}
+</div>
 <form class = "edit" method="post" action="/cargos/save">
     <div class="container-fluid ">
         <input type = "hidden" name="saveMethod"
                value="{{#if isCreate}}create{{else}}update{{/if}}"/>
-        <div class="row">
-            <div class="col-sm-6 float-left">
-                <div class="form-group row justify-content-center">
-                    <div class=" col-5 text-right font-weight-bold">
-                        <label class="col-form-label" for="tracking_id">Tracking number:</label>
-                    </div>
-                    <div class="col-7">
-                        <input class="form-control" type = "number"  name="tracking_id"/><br/>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-<!--        <input type="hidden" name="cargoKey" value="{{cargoKey}}"/>-->
 
         <div class="row">
             <div class="col-sm-6 float-left">
@@ -26,7 +20,16 @@
                         <label class="col-form-label" for="from_name">Sender name:</label>
                     </div>
                     <div class="col-7">
-                        <input class="form-control" type = "text" name="from_name"/><br/>
+                        <input class="form-control" type = "text" name="from_name" required pattern="[A-Za-z]{2,}" value="{{cargoFromName}}"/><br/>
+                    </div>
+                </div>
+
+                <div class="form-group row justify-content-center">
+                    <div class="col-5 text-right font-weight-bold">
+                        <label class="col-form-label" for="from_number">Sender phone number:</label>
+                    </div>
+                    <div class="col-7">
+                        <input class="form-control" type = "number" name="from_number" required minlength="10" value="{{cargoFromNumber}}"/><br/>
                     </div>
                 </div>
                 <div class="form-group row justify-content-center">
@@ -34,15 +37,7 @@
                         <label class="col-form-label" for="from_address">Sender address:</label>
                     </div>
                     <div class="col-7">
-                        <input class="form-control" type = "text" name="from_address"/><br/>
-                    </div>
-                </div>
-                <div class="form-group row justify-content-center">
-                    <div class="col-5 text-right font-weight-bold">
-                        <label class="col-form-label" for="from_number">Sender phone number:</label>
-                    </div>
-                    <div class="col-7">
-                        <input class="form-control" type = "number" name="from_number"/><br/>
+                        <input class="form-control" type = "text" name="from_address" required /><br/>
                     </div>
                 </div>
             </div>
@@ -53,15 +48,7 @@
                         <label class="col-form-label" for="to_name">Receiver name:</label>
                     </div>
                     <div class="col-7">
-                        <input class="form-control" type = "text" name="to_name"/><br/>
-                    </div>
-                </div>
-                <div class="form-group row justify-content-center">
-                    <div class="col-5 text-right font-weight-bold">
-                        <label class="col-form-label" for="to_address">Receiver address:</label>
-                    </div>
-                    <div class="col-7">
-                        <input class="form-control" type = "text" name="to_address"/><br/>
+                        <input class="form-control" type = "text" name="to_name"required pattern="[A-Za-z]{2,}"/><br/>
                     </div>
                 </div>
                 <div class="form-group row justify-content-center">
@@ -69,7 +56,15 @@
                         <label class="col-form-label" for="to_number">Receiver number:</label>
                     </div>
                     <div class="col-7">
-                        <input class="form-control" type = "number" name="to_number"/><br/>
+                        <input class="form-control" type = "number" name="to_number" required minlength="10"/><br/>
+                    </div>
+                </div>
+                <div class="form-group row justify-content-center">
+                    <div class="col-5 text-right font-weight-bold">
+                        <label class="col-form-label" for="to_address">Receiver address:</label>
+                    </div>
+                    <div class="col-7">
+                        <input class="form-control" type = "text" name="to_address"required /><br/>
                     </div>
                 </div>
             </div>
@@ -93,7 +88,7 @@
                         <label class="col-form-label" for="size">Cargo size(lb):</label>
                     </div>
                     <div class="col-7">
-                        <input class="form-control" type="number" name="size" /><br/>
+                        <input class="form-control" type="number" name="size" required/><br/>
                     </div>
                 </div>
             </div>
@@ -103,7 +98,7 @@
                         <label class="col-form-label" for="price">Cargo price($):</label>
                     </div>
                     <div class="col-7">
-                        <input class="form-control" type="number" step="0.01" name="price" /><br/>
+                        <input class="form-control" type="number" step="0.01" name="price" required/><br/>
                     </div>
                 </div>
             </div>
@@ -115,7 +110,7 @@
                 <label class="col-form-label" for="items">Cargo items:</label>
             </div>
             <div class="col-10">
-                <textarea class="form-control" rows=5 name="items"></textarea><br/>
+                <textarea class="form-control" rows=5 name="items" required></textarea><br/>
             </div>
         </div>
         <div class="form-group row justify-content-center ">

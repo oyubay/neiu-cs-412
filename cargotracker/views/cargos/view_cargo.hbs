@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class = "row row-cols-8 justify-content-center">
         <div class="col-8 col-md-5" role="group" >
-            <h5>Tracking number: {{ cargoTrack }}</h5>
+            <h5>Tracking number: <a href="#">{{id}}</a></h5>
             <table class="table">
                 <tbody>
                 <tr>
@@ -27,10 +27,6 @@
                 <tr>
                     <td>Receiver phone number: </td>
                     <td> {{cargoToNumber}}</td>
-                </tr>
-                <tr>
-                    <td>Receiver address: </td>
-                    <td> {{cargoToAddress}}</td>
                 </tr>
                 <tr>
                     <td> Cargo size:</td>
